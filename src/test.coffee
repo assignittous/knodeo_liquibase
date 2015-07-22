@@ -41,11 +41,11 @@ liquibase.dbDoc()
 
 liquibase.tag "tagName"
 
-liquibase.status options
+liquibase.status()
 
 liquibase.validate()
 
-liquibase.changeLogSync options
-liquibase.changeLogSyncSql options
+liquibase.changeLogSync()
+liquibase.changeLogSyncSql()
 
 liquibase.resetRunOptions()

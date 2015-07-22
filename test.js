@@ -48,12 +48,12 @@ liquibase.dbDoc();
 
 liquibase.tag("tagName");
 
-liquibase.status(options);
+liquibase.status();
 
 liquibase.validate();
 
-liquibase.changeLogSync(options);
+liquibase.changeLogSync();
 
-liquibase.changeLogSyncSql(options);
+liquibase.changeLogSyncSql();
 
 liquibase.resetRunOptions();
