@@ -2,26 +2,50 @@ console.log "TEST"
 
 liquibase = require("./index").Liquibase
 
+# note the parameters are case matched to the liquibase docs
 options = 
   driver: "driver.name"
-  classPath: "somepath"
+  classpath: "somepath"
   url: "url:1234/to/db"
   username: "username"
   password: "password"
   changeLogFile: "changelogfile/path"
-  count: 1
-  sql: true
-  execute:
-    async: true
-    test: false
 
+diffOptions = 
+  referenceUserName: "referenceUserName"
+  referencePassword: "referencePassword"
+  referenceUrl: "referenceUrl"
+  referenceDriver: "referenceDriver(optional)"
+
+
+console.log liquibase.parameterize(diffOptions)
+
+liquibase.testMode = false
+
+liquibase.resetRunOptions options
+
+liquibase.update()
+liquibase.updateCount 1
+liquibase.updateSql()
+liquibase.updateCountSql 1
+
+liquibase.rollback "tagName"
+liquibase.rollbackCount 1
+
+liquibase.generateChangeLog()
+
+liquibase.diff diffOptions
+liquibase.diffChangeLog diffOptions
+
+liquibase.dbDoc()
+
+liquibase.tag "tagName"
 
 liquibase.status options
 
-liquibase.run options
+liquibase.validate()
 
-liquibase.rollback options
+liquibase.changeLogSync options
+liquibase.changeLogSyncSql options
 
-liquibase.validate options
-
-liquibase.reverseEngineer options
+liquibase.resetRunOptions()
