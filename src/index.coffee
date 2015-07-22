@@ -18,12 +18,23 @@ cwd = process.env.PWD || process.cwd()
 
 exports.Liquibase = {
 
-
-  execute: (command, async)->
+  ###
+  options:
+    {
+      async: true
+      test: true
+    }
+  ###
+  execute: (command, options)->
 
     shellCommand = command.join(' ')
-    logger.shell shellCommand
-    #cmdoutput = shell.exec(shellCommand, {encoding: "utf8", silent: false, async: async || false})
+
+    if options.test
+      logger.shell shellCommand
+    else
+      console.log "execute the command"
+
+    #cmdoutput = shell.exec(shellCommand, {encoding: "utf8", silent: false, async: options.async || false})
 
     #if cmdoutput.stdout?
     #  cmdoutput.stdout.on 'data', (data)->
@@ -40,6 +51,9 @@ exports.Liquibase = {
       changeLogFile: "path/to/changelogfile"
       count: 1 # not all commands
       sql: true # not all commands
+      execute:
+        async: true
+        test: true
     }
 
   ###
@@ -59,7 +73,7 @@ exports.Liquibase = {
   status: (options)->
     command = @setOptions(options)
     command.push "status"
-    @execute(command, true)
+    @execute(command, options.execute)
 
 
 
@@ -84,16 +98,15 @@ exports.Liquibase = {
     if commandParameter.length > 0
       command.push commandParameter
     #logger.todo "EXECUTE the migration using liquibase"
-    @execute(command, true)
+    @execute(command, options.execute)
 
 
 
   rollback: (options)->
-
     logger.info "Roll back migration"
     command = @setOptions(options)
     command.push "rollback"
-    @execute(command, true)
+    @execute(command, options.execute)
 
   tag: (tag)->
     logger.todo "Manually tag the database with '#{tag}'"
@@ -103,7 +116,7 @@ exports.Liquibase = {
 
     command = @setOptions(options)
     command.push "validate"      
-    @execute(command)
+    @execute(command, options.execute)
 
   doc: (name)->
     logger.todo "Generate liquibase documentation for the database named: "
@@ -112,17 +125,15 @@ exports.Liquibase = {
     logger.todo "Mark all migrations as excuted in the database named "
 
   reverseEngineer: (options)->
-
     logger.info "Reverse engineer the database named: "
     command = @setOptions(options)
     command.push "generateChangeLog"      
-    @execute(command, true)
+    @execute(command, options.execute)
 
 
   reset: (name, environment)->
     logger.todo "Reset the database to tag 0.0.0"
 
-  rebuild: (name, environment)->
-    logger.todo "Run reset(), followed by migration.run()"
+
   
 }

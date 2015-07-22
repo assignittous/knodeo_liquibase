@@ -12,7 +12,11 @@ options = {
   password: "password",
   changeLogFile: "changelogfile/path",
   count: 1,
-  sql: true
+  sql: true,
+  execute: {
+    async: true,
+    test: false
+  }
 };
 
 liquibase.status(options);
