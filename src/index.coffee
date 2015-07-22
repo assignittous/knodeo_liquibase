@@ -29,16 +29,12 @@ exports.Liquibase = {
 
     shellCommand = command.join(' ')
 
-    if options.test
-      logger.shell shellCommand
-    else
-      console.log "execute the command"
-
-    #cmdoutput = shell.exec(shellCommand, {encoding: "utf8", silent: false, async: options.async || false})
-
-    #if cmdoutput.stdout?
-    #  cmdoutput.stdout.on 'data', (data)->
-    #    console.log data
+    logger.shell shellCommand
+    if !options.test
+      cmdoutput = shell.exec(shellCommand, {encoding: "utf8", silent: false, async: options.async || false})
+      if cmdoutput.stdout?
+        cmdoutput.stdout.on 'data', (data)->
+          console.log data
 
   ###
   options:
@@ -70,14 +66,9 @@ exports.Liquibase = {
 
     return command
 
-  status: (options)->
-    command = @setOptions(options)
-    command.push "status"
-    @execute(command, options.execute)
 
 
-
-  run: (options)->
+  update: (options)->
     
     #logger.info "Run migration for database named #{database} in #{environment} environment"
     if options.count?
@@ -100,16 +91,46 @@ exports.Liquibase = {
     #logger.todo "EXECUTE the migration using liquibase"
     @execute(command, options.execute)
 
+  updateCount: (count, options)->
+
+  updateSql: (options) ->
+
+  updateCountSql: (count, options) ->
 
 
-  rollback: (options)->
+
+
+  rollback: (tag, options)->
     logger.info "Roll back migration"
     command = @setOptions(options)
     command.push "rollback"
     @execute(command, options.execute)
 
+  rollbackCount: (count, options)->
+
+  generateChangelog: (options)->
+    logger.info "Reverse engineer the database named: "
+    command = @setOptions(options)
+    command.push "generateChangeLog"      
+    @execute(command, options.execute)
+
+
+  diff: (options)->
+
+  diffChangeLog: (options)->
+
+  dbDoc: (name)->
+    logger.todo "Generate liquibase documentation for the database named: "
+
+
   tag: (tag)->
     logger.todo "Manually tag the database with '#{tag}'"
+
+  status: (options)->
+    command = @setOptions(options)
+    command.push "status"
+    @execute(command, options.execute)
+
 
   validate: (options)->
     logger.info "Validate a changeset file for the database named: "
@@ -118,21 +139,14 @@ exports.Liquibase = {
     command.push "validate"      
     @execute(command, options.execute)
 
-  doc: (name)->
-    logger.todo "Generate liquibase documentation for the database named: "
 
-  sync: (name)->
+  changeLogSync: (name)->
     logger.todo "Mark all migrations as excuted in the database named "
 
-  reverseEngineer: (options)->
-    logger.info "Reverse engineer the database named: "
-    command = @setOptions(options)
-    command.push "generateChangeLog"      
-    @execute(command, options.execute)
+  changeLogSyncSql: (name)->
 
 
-  reset: (name, environment)->
-    logger.todo "Reset the database to tag 0.0.0"
+
 
 
   
