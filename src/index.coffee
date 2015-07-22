@@ -38,7 +38,7 @@ exports.Liquibase = {
 
     parameters = ""
     _.forIn options, (value, key)->
-      if key == "changeLogFile"  # in case paths have spaces
+      if (key == "changeLogFile") || (key == "classpath")  # in case paths have spaces
         value = "\"#{value}\""
       parameters += "--#{key}=#{value} "
 
