@@ -55,8 +55,6 @@ Samples in coffeescript:
 
 liquibase = require("liquibase").Liquibase
 
-liquibase = require("./index").Liquibase
-
 # note the parameters are case matched to the liquibase docs
 options = 
   driver: "driver.name"
