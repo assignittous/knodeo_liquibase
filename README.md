@@ -49,19 +49,72 @@ To add it to your project:
 
 # Usage
 
+Samples in coffeescript:
+
+```
+
+liquibase = require("liquibase").Liquibase
+
+liquibase = require("./index").Liquibase
+
+# note the parameters are case matched to the liquibase docs
+options = 
+  driver: "driver.name"
+  classpath: "somepath"
+  url: "url:1234/to/db"
+  username: "username"
+  password: "password"
+  changeLogFile: "changelogfile/path"
+
+diffOptions = 
+  referenceUserName: "referenceUserName"
+  referencePassword: "referencePassword"
+  referenceUrl: "referenceUrl"
+  referenceDriver: "referenceDriver(optional)"
+
+# if this is set to true, the command will not be executed but shown in the console
+# default is true
+liquibase.testMode = false
+
+# Sets the main runtime options for liquibase
+liquibase.resetRunOptions options
+
+# update
+liquibase.update()
+liquibase.updateCount 1
+liquibase.updateSql()
+liquibase.updateCountSql 1
+
+# rollback
+liquibase.rollback "tagName"
+liquibase.rollbackCount 1
+
+# generate changelog from an existing database, i.e., "reverse engineer"
+liquibase.generateChangeLog()
+
+# show the differences between the database specified in the options and the diffOptions
+liquibase.diff diffOptions
+liquibase.diffChangeLog diffOptions
+
+# generate documentation on the currrent database
+liquibase.dbDoc()
+
+# tag the database
+liquibase.tag "tagName"
+
+# show the migration status of the database
+liquibase.status()
+
+# validate the liquibase changelog file
+liquibase.validate()
+
+# mark changes as "ran"
+liquibase.changeLogSync()
+liquibase.changeLogSyncSql()
+
+# clear the options for running liquibase
+liquibase.resetRunOptions()
+
+```
 
 
-options:
-  {
-    driver: "driver.name.space"
-    classPath: "path/to/driver"
-    url: "database url"
-    username: "username"
-    password: "password"
-    changeLogFile: "path/to/changelogfile"
-    count: 1 # not all commands
-    sql: true # not all commands
-    execute:
-      async: true
-      test: true
-  }
